@@ -2,12 +2,13 @@ import numpy as np
 import functools
 
 class Unit:
+    id: int
     name: str
     produceTrigger: np.ufunc
     inventory: np.ndarray
-    personList: np.ndarray
+    personList: list[int]
     
-    def __init__(self, name: str, inventory: np.ndarray, personList: np.ndarray) -> None:
+    def __init__(self, name: str, inventory: np.ndarray, personList: list[int]) -> None:
         self.name = name
         self.inventory = inventory
         self.personList = personList
