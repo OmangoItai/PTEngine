@@ -7,10 +7,12 @@ class Unit:
     produceTrigger: np.ufunc
     inventory: np.ndarray
     personList: list[int]
+    # todo personList 是记编号还是引用
     
-    def __init__(self, name: str, inventory: np.ndarray, personList: list[int]) -> None:
+    def __init__(self, id: int, name: str, inventory: np.ndarray | list[float], personList: list[int]) -> None:
+        self.id = id
         self.name = name
-        self.inventory = inventory
+        self.inventory = np.array(inventory) if isinstance(inventory,list) else inventory
         self.personList = personList
         self.produceTrigger = None
     

@@ -1,23 +1,18 @@
 import numpy as np
 
+class MapGraph:
 
-class mapGraph:
-    
-    class Node:
-        id: int
-        name: str
-        def __init__(self, id: int, name: str) -> None:
-            self.id = id
-            self.name = name
-    
-    nodes: list[Node]
     costs: np.ndarray[np.ndarray[np.ndarray]]
     
-    def __init__(self) -> None:
+    def __init__(self, MapSize: int, priceVectorSize: int) -> None:
+        self.costs = np.zeros((MapSize, MapSize, priceVectorSize), dtype=np.ndarray)
         pass
 
-    def addNode(self, name: str):
-        self.nodes.append(id = self.Node(len(self.nodes), name = name))
+    def addEdge(self, fromEnd: int, toEnd: int, cost: np.ndarray):
+        self.costs[fromEnd][toEnd] = self.costs[toEnd][fromEnd] = cost
+
+    def getCost(self, fromEnd: int, toEnd: int):
+        return self.costs[fromEnd][toEnd]
 
     def floyd_algorithm(self):
         n = len(self.nodes)
