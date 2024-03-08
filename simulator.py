@@ -37,3 +37,4 @@ map.floyd_algorithm()
 timePeriod = 365
 
 simulator = Simulator(naturalResources=naturalResources, personList=personList, unitList=unitList, priceVector=priceVecotr, timePeriod=timePeriod)
+simulator.exec()
