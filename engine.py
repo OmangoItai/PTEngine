@@ -1,9 +1,10 @@
+import random
 import numpy as np
 import environment, mapGraph, person, taskQueue, unit
 
-class Simulator:
+class PTEngine:
     env: environment.Env
-    def __init__(self, naturalResources: np.ndarray, personList: list[person.Person], unitList: list[unit.Unit], priceVector: np.ndarray, timePeriod: int) -> None:
+    def __init__(self, naturalResources: np.ndarray, personList: list[person.Person], unitList: list[unit.Unit], map: mapGraph.MapGraph, priceVector: np.ndarray, timePeriod: int) -> None:
         
         self.env = environment.Env(naturalResources=naturalResources, personList=personList, unitList=unitList, map=map, priceVector=priceVector, timePeriod=timePeriod)
         
@@ -36,5 +37,5 @@ map.floyd_algorithm()
 
 timePeriod = 365
 
-simulator = Simulator(naturalResources=naturalResources, personList=personList, unitList=unitList, priceVector=priceVecotr, timePeriod=timePeriod)
-simulator.exec()
+engine = PTEngine(naturalResources=naturalResources, personList=personList, unitList=unitList, map=map, priceVector=priceVecotr, timePeriod=timePeriod)
+engine.exec()
