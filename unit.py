@@ -2,7 +2,7 @@ from typing import Dict, List
 import numpy as np
 import functools
 import taskQueue
-class Entity:
+class Unit:
     id: int
     name: str
     triggers: Dict[str: np.ufunc]
