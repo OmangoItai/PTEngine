@@ -3,9 +3,10 @@ import numpy as np
 class MapGraph:
 
     costs: np.ndarray[np.ndarray[np.ndarray]]
-    
-    def __init__(self, MapSize: int, priceVectorSize: int) -> None:
-        self.costs = np.zeros((MapSize, MapSize, priceVectorSize), dtype=np.ndarray)
+    size: int
+    def __init__(self, size: int, priceVectorSize: int) -> None:
+        self.size = size
+        self.costs = np.zeros((size, size, priceVectorSize), dtype=np.ndarray)
         pass
 
     def addEdge(self, fromEnd: int, toEnd: int, cost: np.ndarray):
@@ -15,9 +16,9 @@ class MapGraph:
         return self.costs[fromEnd][toEnd]
 
     def floyd_algorithm(self):
-        n = len(self.nodes)
-        for k in range(n):
-            for i in range(n):
-                for j in range(n):
-                    if self.costs[i][j] > self.costs[i][k] + self.costs[k][j] :
+        for k in range(self.size):
+            for i in range(self.size):
+                for j in range(self.size):
+                    # todo 路径花费偏序关系
+                    if np.linalg.norm(self.costs[i][j]) > np.linalg.norm(self.costs[i][k] + self.costs[k][j]) :
                         self.costs[i][j] = self.costs[i][k] + self.costs[k][j]
