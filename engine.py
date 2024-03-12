@@ -1,10 +1,10 @@
 import random
 import numpy as np
-import environment, mapGraph, person, taskQueue, unit
+import environment, mapGraph, person, taskQueue, entity
 
 class PTEngine:
     env: environment.Env
-    def __init__(self, naturalResources: np.ndarray, personList: list[person.Person], unitList: list[unit.Unit], map: mapGraph.MapGraph, priceVector: np.ndarray, timePeriod: int) -> None:
+    def __init__(self, naturalResources: np.ndarray, personList: list[person.Person], unitList: list[entity.Entity], map: mapGraph.MapGraph, priceVector: np.ndarray, timePeriod: int) -> None:
         
         self.env = environment.Env(naturalResources=naturalResources, personList=personList, unitList=unitList, map=map, priceVector=priceVector, timePeriod=timePeriod)
         
@@ -26,8 +26,8 @@ person1 = person.Person(id=1, inventory=[0,0,0,0,0])
 person2 = person.Person(id=1, inventory=[0,0,0,0,0])
 personList = [person0, person1, person2]
 
-unit0 = unit.Unit(id=0, name='factory', inventory=[5,5,5,5,5],personList=[person0, person1])
-unit1 = unit.Unit(id=1, name='community', inventory=[0,0,0,0,0], personList=[person0, person1, person2])
+unit0 = entity.Entity(id=0, name='factory', inventory=[5,5,5,5,5],personList=[person0, person1])
+unit1 = entity.Entity(id=1, name='community', inventory=[0,0,0,0,0], personList=[person0, person1, person2])
 
 unitList = [unit0, unit1]
 

@@ -2,16 +2,16 @@ from typing import Tuple
 import queue
 import numpy as np
 from environment import Env
-from unit import Unit
+from entity import Entity
 
 class Task:
 
     class Target:
-        unitId: Unit
+        entityId: int
         product: np.ndarray
     
-        def __init__(self, unitId: int, product: np.ndarray) -> None:
-            self.unitId = unitId
+        def __init__(self, entityId: int, product: np.ndarray) -> None:
+            self.entityId = entityId
             self.product = product
     
     endtime: int
@@ -34,7 +34,7 @@ class TaskQueue:
     def settleATask(self):
         cEndtime, cTask = self.tasks.get()
         for t in cTask.targets:
-            newTask: Task = t.unit.produceTrigger()
+            newTask: Task = t.entity.produceTrigger()
             newTask.endtime += self.env.time # 校准时钟
             if newTask:
                 self.addTask(newTask)
