@@ -2,13 +2,12 @@ import numpy as np
 from typing import Tuple
 import queue
 
-from environment import Env
+# from environment import Env
 from mapGraph import MapGraph
 from person import Person
 from unit import Unit
 
 class Task:
-
     class Target:
         unitId: int
         product: np.ndarray
@@ -24,38 +23,50 @@ class Task:
         self.endtime = endtime
         self.targets = targets
         
-class TaskQueue:
-    env: Env
+class PTEngine:
+    naturalResources: np.ndarray
+    naturalResourcesInventory: np.ndarray
+    personList: list[Person]
+    unitList: list[Unit]
+    map: MapGraph
+    priceVector: np.ndarray
+    timePeriod: int
+    time: int
     tasks: queue.PriorityQueue[Tuple[int, Task]]
-    def __init__(self, env) -> None:
-        self.env = env
+
+    def __init__(self, naturalResources: np.ndarray, personList: list[Person], unitList: list[Unit], map: MapGraph, priceVector: np.ndarray, timePeriod: int) -> None:
+        self.naturalResources = naturalResources
+        self.naturalResourcesInventory = naturalResources
+        self.personList = personList
+        self.unitList = unitList
+        self.map = map
+        self.priceVector = priceVector
+        self.timePeriod = timePeriod
+        self.time = 0
         self.tasks = queue.PriorityQueue()
     
+    def setTime(self, time: int):
+        self.time = time
+
     def addTask(self, task: Task):
         self.tasks.put((task.endtime, task))
     
     def settleATask(self):
         cEndtime, cTask = self.tasks.get()
         for t in cTask.targets:
-            newTask: Task = self.env.unitList[t.unitId].triggers[' ']()
-            newTask.endtime += self.env.time # 校准时钟
+            newTask: Task = self.unitList[t.unitId].triggers[' ']()
+            newTask.endtime += self.time # 校准时钟
             if newTask:
                 self.addTask(newTask)
-        self.env.setTime(cEndtime)
+        self.setTime(cEndtime)
 
-class PTEngine:
-    envModel: Env
-    taskModel: TaskQueue
-    def __init__(self, naturalResources: np.ndarray, personList: list[Person], unitList: list[Unit], map: MapGraph, priceVector: np.ndarray, timePeriod: int) -> None:
-        self.envModel = Env(naturalResources=naturalResources, personList=personList, unitList=unitList, map=map, priceVector=priceVector, timePeriod=timePeriod)
-        self.taskModel = TaskQueue(self.envModel)
     def exec(self):
         pass
         # todo load task
         targetList = [Task.Target(unitId=1, product=np.array([1,0,0,0,0]))]
-        self.taskModel.addTask(Task(endtime=3,targets=targetList))
+        self.addTask(Task(endtime=3,targets=targetList))
         while(True):
-            self.taskModel.settleATask()
+            self.settleATask()
 
 # 以下放到 main 或配置文件初始化
 
