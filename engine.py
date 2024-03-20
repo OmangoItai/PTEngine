@@ -2,7 +2,6 @@ import numpy as np
 from typing import Tuple
 import queue
 
-# from environment import Env
 from mapGraph import MapGraph
 from person import Person
 from unit import Unit
@@ -32,7 +31,8 @@ class PTEngine:
     priceVector: np.ndarray
     timePeriod: int
     time: int
-    tasks: queue.PriorityQueue[Tuple[int, Task]]
+
+    taskQueue: queue.PriorityQueue[Tuple[int, Task]]
 
     def __init__(self, naturalResources: np.ndarray, personList: list[Person], unitList: list[Unit], map: MapGraph, priceVector: np.ndarray, timePeriod: int) -> None:
         self.naturalResources = naturalResources
@@ -43,16 +43,16 @@ class PTEngine:
         self.priceVector = priceVector
         self.timePeriod = timePeriod
         self.time = 0
-        self.tasks = queue.PriorityQueue()
+        self.taskQueue = queue.PriorityQueue()
     
     def setTime(self, time: int):
         self.time = time
 
     def addTask(self, task: Task):
-        self.tasks.put((task.endtime, task))
+        self.taskQueue.put((task.endtime, task))
     
     def settleATask(self):
-        cEndtime, cTask = self.tasks.get()
+        cEndtime, cTask = self.taskQueue.get()
         for t in cTask.targets:
             newTask: Task = self.unitList[t.unitId].triggers[' ']()
             newTask.endtime += self.time # 校准时钟
